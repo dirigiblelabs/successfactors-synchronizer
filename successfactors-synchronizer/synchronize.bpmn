@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.flowable.org/processdef">
+  <process id="successfactors-synchronizer" name="SuccessFactors Synchronizer" isExecutable="true">
+    <startEvent id="sid-3334E861-7999-4B89-B8B0-11724BA17A3E"/>
+    <serviceTask id="sid-CD0B5868-2147-47FD-B939-16E6151EABD6" name="Setup" flowable:class="org.eclipse.dirigible.bpm.flowable.DirigibleCallDelegate">
+      <extensionElements>
+        <flowable:field name="handler">
+          <flowable:string><![CDATA[successfactors-synchronizer/tasks/SetupTask.js]]></flowable:string>
+        </flowable:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-797626AE-B2F6-4C00-ABEE-FB30ADC177E4" sourceRef="sid-3334E861-7999-4B89-B8B0-11724BA17A3E" targetRef="sid-CD0B5868-2147-47FD-B939-16E6151EABD6"/>
+    <endEvent id="sid-70B488C1-384A-4E19-8091-1B12D1AEC7FD"/>
+    <exclusiveGateway id="sid-42AC4708-17C5-482E-8D84-D3DB3C56A95C" default="sid-FA7EDEE9-A9A8-4F85-8D6F-562A1A4EC84B"/>
+    <sequenceFlow id="sid-9B9812BF-9C55-4A4D-957B-2C29E8C5AF69" sourceRef="sid-CD0B5868-2147-47FD-B939-16E6151EABD6" targetRef="sid-42AC4708-17C5-482E-8D84-D3DB3C56A95C"/>
+    <serviceTask id="sid-0471C449-85E7-45A8-9F51-8FBF4A2830DD" name="Create Table" flowable:class="org.eclipse.dirigible.bpm.flowable.DirigibleCallDelegate">
+      <extensionElements>
+        <flowable:field name="handler">
+          <flowable:string><![CDATA[successfactors-synchronizer/tasks/CreateTableTask.js]]></flowable:string>
+        </flowable:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="sid-96C0009E-A1B4-4230-8F99-A9C7205BC479" name="Drop Table" flowable:class="org.eclipse.dirigible.bpm.flowable.DirigibleCallDelegate">
+      <extensionElements>
+        <flowable:field name="handler">
+          <flowable:string><![CDATA[successfactors-synchronizer/tasks/DropTableTask.js]]></flowable:string>
+        </flowable:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-213D2C65-8583-4AAE-8C4A-8FD532F3C3A2" sourceRef="sid-96C0009E-A1B4-4230-8F99-A9C7205BC479" targetRef="sid-70B488C1-384A-4E19-8091-1B12D1AEC7FD"/>
+    <sequenceFlow id="sid-87D3A144-5B62-46E7-ABDB-016447BE90BB" sourceRef="sid-0471C449-85E7-45A8-9F51-8FBF4A2830DD" targetRef="sid-70B488C1-384A-4E19-8091-1B12D1AEC7FD"/>
+    <sequenceFlow id="sid-FA7EDEE9-A9A8-4F85-8D6F-562A1A4EC84B" sourceRef="sid-42AC4708-17C5-482E-8D84-D3DB3C56A95C" targetRef="sid-96C0009E-A1B4-4230-8F99-A9C7205BC479"/>
+    <sequenceFlow id="sid-0D1C1F54-1A56-46B7-AF2A-06A2FCC5D56D" name="Entity Table Not Found" sourceRef="sid-42AC4708-17C5-482E-8D84-D3DB3C56A95C" targetRef="sid-0471C449-85E7-45A8-9F51-8FBF4A2830DD">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${!existsTable}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_successfactors-synchronizer">
+    <bpmndi:BPMNPlane bpmnElement="successfactors-synchronizer" id="BPMNPlane_successfactors-synchronizer">
+      <bpmndi:BPMNShape bpmnElement="sid-3334E861-7999-4B89-B8B0-11724BA17A3E" id="BPMNShape_sid-3334E861-7999-4B89-B8B0-11724BA17A3E">
+        <omgdc:Bounds height="30.0" width="30.0" x="103.0" y="78.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-CD0B5868-2147-47FD-B939-16E6151EABD6" id="BPMNShape_sid-CD0B5868-2147-47FD-B939-16E6151EABD6">
+        <omgdc:Bounds height="80.0" width="100.0" x="180.0" y="53.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-70B488C1-384A-4E19-8091-1B12D1AEC7FD" id="BPMNShape_sid-70B488C1-384A-4E19-8091-1B12D1AEC7FD">
+        <omgdc:Bounds height="28.0" width="28.0" x="570.0" y="79.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-42AC4708-17C5-482E-8D84-D3DB3C56A95C" id="BPMNShape_sid-42AC4708-17C5-482E-8D84-D3DB3C56A95C">
+        <omgdc:Bounds height="40.0" width="40.0" x="325.0" y="72.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-0471C449-85E7-45A8-9F51-8FBF4A2830DD" id="BPMNShape_sid-0471C449-85E7-45A8-9F51-8FBF4A2830DD">
+        <omgdc:Bounds height="80.0" width="100.0" x="295.0" y="270.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-96C0009E-A1B4-4230-8F99-A9C7205BC479" id="BPMNShape_sid-96C0009E-A1B4-4230-8F99-A9C7205BC479">
+        <omgdc:Bounds height="80.0" width="100.0" x="405.0" y="53.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sid-797626AE-B2F6-4C00-ABEE-FB30ADC177E4" id="BPMNEdge_sid-797626AE-B2F6-4C00-ABEE-FB30ADC177E4">
+        <omgdi:waypoint x="132.94999854338204" y="93.0"/>
+        <omgdi:waypoint x="180.0" y="93.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-FA7EDEE9-A9A8-4F85-8D6F-562A1A4EC84B" id="BPMNEdge_sid-FA7EDEE9-A9A8-4F85-8D6F-562A1A4EC84B">
+        <omgdi:waypoint x="364.76145364536455" y="92.17972972972973"/>
+        <omgdi:waypoint x="404.99999999999955" y="92.54545454545455"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-0D1C1F54-1A56-46B7-AF2A-06A2FCC5D56D" id="BPMNEdge_sid-0D1C1F54-1A56-46B7-AF2A-06A2FCC5D56D">
+        <omgdi:waypoint x="345.0" y="111.94542640990369"/>
+        <omgdi:waypoint x="345.0" y="270.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-213D2C65-8583-4AAE-8C4A-8FD532F3C3A2" id="BPMNEdge_sid-213D2C65-8583-4AAE-8C4A-8FD532F3C3A2">
+        <omgdi:waypoint x="504.94999999998987" y="93.0"/>
+        <omgdi:waypoint x="570.0" y="93.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-87D3A144-5B62-46E7-ABDB-016447BE90BB" id="BPMNEdge_sid-87D3A144-5B62-46E7-ABDB-016447BE90BB">
+        <omgdi:waypoint x="389.0002304147465" y="270.0"/>
+        <omgdi:waypoint x="573.6348792698146" y="102.37739845150276"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-9B9812BF-9C55-4A4D-957B-2C29E8C5AF69" id="BPMNEdge_sid-9B9812BF-9C55-4A4D-957B-2C29E8C5AF69">
+        <omgdi:waypoint x="279.9499999999976" y="92.56521739130436"/>
+        <omgdi:waypoint x="325.17241379310224" y="92.17198275862069"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
