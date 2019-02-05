@@ -10,5 +10,7 @@ var entityModel = daoModelUtils.getModel(entity);
 dao.setEntityModel(entityModel);
 var existsTable = dao.existsTable();
 
+console.error("Setup Task - existsTable: " + existsTable);
+
 process.setVariable(execution.getId(), "entityModel", JSON.stringify(entityModel));
 process.setVariable(execution.getId(), "existsTable", existsTable);

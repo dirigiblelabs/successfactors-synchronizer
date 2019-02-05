@@ -38,6 +38,8 @@ exports.getModel = function(entity) {
 	var selectedProperties = this.getSelectedProperties(entity);
 	selectedProperties = selectedProperties ? selectedProperties : metadata;
 
+	model.oDataSelect = selectedProperties.map(e => e.name).join(",");
+
 	for (var i = 0; i < selectedProperties.length; i++) {
 		for (var j = 0; j < metadata.length; j ++) {
 			if (metadata[j].name === selectedProperties[i].name) {
@@ -45,7 +47,7 @@ exports.getModel = function(entity) {
 					name: metadata[j].name,
 					column: metadata[j].name.toUpperCase(),
 					type: getDatabaseType(metadata[j].type),
-					required: Boolean(metadata[j].required)
+					required: !Boolean(metadata[j].nullable)
 				});
 			}
 		}

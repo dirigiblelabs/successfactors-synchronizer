@@ -20,19 +20,27 @@
         </flowable:field>
       </extensionElements>
     </serviceTask>
-    <serviceTask id="sid-96C0009E-A1B4-4230-8F99-A9C7205BC479" name="Drop Table" flowable:class="org.eclipse.dirigible.bpm.flowable.DirigibleCallDelegate">
+    <serviceTask id="sid-96C0009E-A1B4-4230-8F99-A9C7205BC479" name="Fetch Entities" flowable:class="org.eclipse.dirigible.bpm.flowable.DirigibleCallDelegate">
       <extensionElements>
         <flowable:field name="handler">
-          <flowable:string><![CDATA[successfactors-synchronizer/tasks/DropTableTask.js]]></flowable:string>
+          <flowable:string><![CDATA[successfactors-synchronizer/tasks/FetchEntitiesTask.js]]></flowable:string>
         </flowable:field>
       </extensionElements>
     </serviceTask>
-    <sequenceFlow id="sid-213D2C65-8583-4AAE-8C4A-8FD532F3C3A2" sourceRef="sid-96C0009E-A1B4-4230-8F99-A9C7205BC479" targetRef="sid-70B488C1-384A-4E19-8091-1B12D1AEC7FD"/>
-    <sequenceFlow id="sid-87D3A144-5B62-46E7-ABDB-016447BE90BB" sourceRef="sid-0471C449-85E7-45A8-9F51-8FBF4A2830DD" targetRef="sid-70B488C1-384A-4E19-8091-1B12D1AEC7FD"/>
     <sequenceFlow id="sid-FA7EDEE9-A9A8-4F85-8D6F-562A1A4EC84B" sourceRef="sid-42AC4708-17C5-482E-8D84-D3DB3C56A95C" targetRef="sid-96C0009E-A1B4-4230-8F99-A9C7205BC479"/>
     <sequenceFlow id="sid-0D1C1F54-1A56-46B7-AF2A-06A2FCC5D56D" name="Entity Table Not Found" sourceRef="sid-42AC4708-17C5-482E-8D84-D3DB3C56A95C" targetRef="sid-0471C449-85E7-45A8-9F51-8FBF4A2830DD">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${!existsTable}]]></conditionExpression>
     </sequenceFlow>
+    <sequenceFlow id="sid-87D3A144-5B62-46E7-ABDB-016447BE90BB" sourceRef="sid-0471C449-85E7-45A8-9F51-8FBF4A2830DD" targetRef="sid-96C0009E-A1B4-4230-8F99-A9C7205BC479"/>
+    <serviceTask id="sid-F74D14E2-F05C-4BE3-9ADB-ACF0865EFE70" name="Persist Entities" flowable:class="org.eclipse.dirigible.bpm.flowable.DirigibleCallDelegate">
+      <extensionElements>
+        <flowable:field name="handler">
+          <flowable:string><![CDATA[successfactors-synchronizer/tasks/PersistEntitiesTask.js]]></flowable:string>
+        </flowable:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-66E979DF-6507-49BB-8E31-95BD56152F19" sourceRef="sid-96C0009E-A1B4-4230-8F99-A9C7205BC479" targetRef="sid-F74D14E2-F05C-4BE3-9ADB-ACF0865EFE70"/>
+    <sequenceFlow id="sid-213D2C65-8583-4AAE-8C4A-8FD532F3C3A2" sourceRef="sid-F74D14E2-F05C-4BE3-9ADB-ACF0865EFE70" targetRef="sid-70B488C1-384A-4E19-8091-1B12D1AEC7FD"/>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_successfactors-synchronizer">
     <bpmndi:BPMNPlane bpmnElement="successfactors-synchronizer" id="BPMNPlane_successfactors-synchronizer">
@@ -43,7 +51,7 @@
         <omgdc:Bounds height="80.0" width="100.0" x="180.0" y="53.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="sid-70B488C1-384A-4E19-8091-1B12D1AEC7FD" id="BPMNShape_sid-70B488C1-384A-4E19-8091-1B12D1AEC7FD">
-        <omgdc:Bounds height="28.0" width="28.0" x="570.0" y="79.0"/>
+        <omgdc:Bounds height="28.0" width="28.0" x="606.0" y="210.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="sid-42AC4708-17C5-482E-8D84-D3DB3C56A95C" id="BPMNShape_sid-42AC4708-17C5-482E-8D84-D3DB3C56A95C">
         <omgdc:Bounds height="40.0" width="40.0" x="325.0" y="72.0"/>
@@ -52,27 +60,34 @@
         <omgdc:Bounds height="80.0" width="100.0" x="295.0" y="270.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="sid-96C0009E-A1B4-4230-8F99-A9C7205BC479" id="BPMNShape_sid-96C0009E-A1B4-4230-8F99-A9C7205BC479">
-        <omgdc:Bounds height="80.0" width="100.0" x="405.0" y="53.0"/>
+        <omgdc:Bounds height="80.0" width="100.0" x="420.0" y="52.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-F74D14E2-F05C-4BE3-9ADB-ACF0865EFE70" id="BPMNShape_sid-F74D14E2-F05C-4BE3-9ADB-ACF0865EFE70">
+        <omgdc:Bounds height="80.0" width="100.0" x="570.0" y="52.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="sid-797626AE-B2F6-4C00-ABEE-FB30ADC177E4" id="BPMNEdge_sid-797626AE-B2F6-4C00-ABEE-FB30ADC177E4">
         <omgdi:waypoint x="132.94999854338204" y="93.0"/>
         <omgdi:waypoint x="180.0" y="93.0"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sid-FA7EDEE9-A9A8-4F85-8D6F-562A1A4EC84B" id="BPMNEdge_sid-FA7EDEE9-A9A8-4F85-8D6F-562A1A4EC84B">
-        <omgdi:waypoint x="364.76145364536455" y="92.17972972972973"/>
-        <omgdi:waypoint x="404.99999999999955" y="92.54545454545455"/>
+        <omgdi:waypoint x="364.94202637889686" y="92.0"/>
+        <omgdi:waypoint x="420.0" y="92.0"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sid-0D1C1F54-1A56-46B7-AF2A-06A2FCC5D56D" id="BPMNEdge_sid-0D1C1F54-1A56-46B7-AF2A-06A2FCC5D56D">
         <omgdi:waypoint x="345.0" y="111.94542640990369"/>
         <omgdi:waypoint x="345.0" y="270.0"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sid-213D2C65-8583-4AAE-8C4A-8FD532F3C3A2" id="BPMNEdge_sid-213D2C65-8583-4AAE-8C4A-8FD532F3C3A2">
-        <omgdi:waypoint x="504.94999999998987" y="93.0"/>
-        <omgdi:waypoint x="570.0" y="93.0"/>
+        <omgdi:waypoint x="620.0" y="131.95"/>
+        <omgdi:waypoint x="620.0" y="210.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-66E979DF-6507-49BB-8E31-95BD56152F19" id="BPMNEdge_sid-66E979DF-6507-49BB-8E31-95BD56152F19">
+        <omgdi:waypoint x="519.9499999999723" y="92.0"/>
+        <omgdi:waypoint x="569.9999999999648" y="92.0"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sid-87D3A144-5B62-46E7-ABDB-016447BE90BB" id="BPMNEdge_sid-87D3A144-5B62-46E7-ABDB-016447BE90BB">
-        <omgdi:waypoint x="389.0002304147465" y="270.0"/>
-        <omgdi:waypoint x="573.6348792698146" y="102.37739845150276"/>
+        <omgdi:waypoint x="367.9071100917431" y="270.0"/>
+        <omgdi:waypoint x="447.0642201834862" y="131.95"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sid-9B9812BF-9C55-4A4D-957B-2C29E8C5AF69" id="BPMNEdge_sid-9B9812BF-9C55-4A4D-957B-2C29E8C5AF69">
         <omgdi:waypoint x="279.9499999999976" y="92.56521739130436"/>
