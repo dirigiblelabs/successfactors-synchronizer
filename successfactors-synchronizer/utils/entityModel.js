@@ -24,23 +24,29 @@ function getDatabaseType(oDataType) {
 	}
 }
 
-exports.getModel = function(entity) {
-	var model = {
-		table: "SUCCESSFACTORS_" + entity.toUpperCase(),
-		properties: [{
-			name: "id",
-			column: "ID",
-			type: "INTEGER",
-			id: true
-		}]
+exports.getModel = function(entityName) {
+	var key = {
+		name: "id",
+		column: "ID",
+		type: "INTEGER",
+		id: true
 	};
-	var metadata = metadataUtils.getMetadata(entity);
-	var selectedProperties = this.getSelectedProperties(entity);
+
+	var model = {
+		table: "SUCCESSFACTORS_" + entityName.toUpperCase(),
+		properties: [key],
+		key: key,
+		businessKeys: this.getBusinessKeys(entityName)
+	};
+
+	var metadata = metadataUtils.getMetadata(entityName);
+	var selectedProperties = this.getSelectedProperties(entityName);
+	selectedProperties = selectedProperties ? selectedProperties.concat(model.businessKeys) : null;
 	selectedProperties = selectedProperties ? selectedProperties : metadata;
 
 	model.oDataSelect = selectedProperties.map(e => e.name).join(",");
 
-	for (var i = 0; i < selectedProperties.length; i++) {
+	for (var i = 0; i < selectedProperties.length; i ++) {
 		for (var j = 0; j < metadata.length; j ++) {
 			if (metadata[j].name === selectedProperties[i].name) {
 				model.properties.push({
@@ -55,15 +61,25 @@ exports.getModel = function(entity) {
 	return model;
 };
 
-exports.getSelectedProperties = function(entity) {
+exports.getBusinessKeys = function(entityName) {
+	var entityExtension = getEntityExtension(entityName);
+	return entityExtension ? entityExtension.getBusinessKeys() : [];
+};
+
+exports.getSelectedProperties = function(entityName) {
+	var entityExtension = getEntityExtension(entityName);
+	return entityExtension ? entityExtension.getSelectedProperties() : null;
+};
+
+function getEntityExtension(entityName) {
 	var entityModels = extensions.getExtensions("successfactors-entity-models");
 	if (entityModels !== null && entityModels.length > 0) {
 		for (var i = 0; i < entityModels.length; i ++) {
 			var module = require(entityModels[i]);
-			if (module.getEntityName() === entity) {
-				return module.getSelectedProperties();
+			if (module.getEntityName() === entityName) {
+				return module;
 			}
 		}
 	}
 	return null;
-};
+}

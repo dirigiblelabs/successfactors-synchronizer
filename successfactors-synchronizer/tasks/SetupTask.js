@@ -1,6 +1,5 @@
 var process = require("bpm/v3/process");
 var dao = require("successfactors-synchronizer/data/EntityDao")
-
 var daoModelUtils = require("successfactors-synchronizer/utils/entityModel");
 
 var execution = process.getExecutionContext();

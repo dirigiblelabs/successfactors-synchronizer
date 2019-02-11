@@ -16,5 +16,10 @@ dao.setEntityModel(getEntityModel());
 
 var entities = inMemoryEntityDao.list(getEntity());
 for (var i = 0; i < entities.length; i ++) {
-	dao.create(entities[i]);
+	var entity = entities[i];
+	if (!dao.contains(entity)) {
+		dao.create(entity);
+	} else {
+		dao.update(entity);
+	}
 }
